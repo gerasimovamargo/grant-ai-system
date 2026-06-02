@@ -1,59 +1,138 @@
-<p align="center"><a href="https://laravel.com" target="_blank"><img src="https://raw.githubusercontent.com/laravel/art/master/logo-lockup/5%20SVG/2%20CMYK/1%20Full%20Color/laravel-logolockup-cmyk-red.svg" width="400" alt="Laravel Logo"></a></p>
+# GrantAI — Інтелектуальна система пошуку грантів
 
-<p align="center">
-<a href="https://github.com/laravel/framework/actions"><img src="https://github.com/laravel/framework/workflows/tests/badge.svg" alt="Build Status"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/dt/laravel/framework" alt="Total Downloads"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/v/laravel/framework" alt="Latest Stable Version"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/l/laravel/framework" alt="License"></a>
-</p>
+AI-агент для автоматизованого пошуку та оцінки грантових програм на основі Gemini API від Google. Система аналізує профіль користувача, підбирає релевантні гранти за 10 метриками та надсилає персональні рекомендації на email.
 
-## About Laravel
+## Можливості
 
-Laravel is a web application framework with expressive, elegant syntax. We believe development must be an enjoyable and creative experience to be truly fulfilling. Laravel takes the pain out of development by easing common tasks used in many web projects, such as:
+- Пошук грантів за запитом у вільній формі
+- Оцінка грантів за 10 метриками з показником збігу від 0 до 100%
+- Виділення TOP-3 найбільш релевантних грантів
+- Персональний профіль користувача для точнішого підбору
+- Автоматичне email-сповіщення з TOP-3 грантами після кожного пошуку
+- Автоматичний моніторинг нових грантів щоп'ятниці о 9:00
 
-- [Simple, fast routing engine](https://laravel.com/docs/routing).
-- [Powerful dependency injection container](https://laravel.com/docs/container).
-- Multiple back-ends for [session](https://laravel.com/docs/session) and [cache](https://laravel.com/docs/cache) storage.
-- Expressive, intuitive [database ORM](https://laravel.com/docs/eloquent).
-- Database agnostic [schema migrations](https://laravel.com/docs/migrations).
-- [Robust background job processing](https://laravel.com/docs/queues).
-- [Real-time event broadcasting](https://laravel.com/docs/broadcasting).
+## Технологічний стек
 
-Laravel is accessible, powerful, and provides tools required for large, robust applications.
+- PHP 8.2
+- Laravel 12
+- MySQL
+- Gemini 2.5 Flash API
+- Gmail SMTP
+- HTML / CSS / Blade
 
-## Learning Laravel
+## Вимоги
 
-Laravel has the most extensive and thorough [documentation](https://laravel.com/docs) and video tutorial library of all modern web application frameworks, making it a breeze to get started with the framework. You can also check out [Laravel Learn](https://laravel.com/learn), where you will be guided through building a modern Laravel application.
+- PHP >= 8.2
+- Composer
+- MySQL
+- Laragon або XAMPP
+- Gemini API ключ (безкоштовно на ai.google.dev)
+- Gmail акаунт з увімкненою двофакторною автентифікацією
 
-If you don't feel like reading, [Laracasts](https://laracasts.com) can help. Laracasts contains thousands of video tutorials on a range of topics including Laravel, modern PHP, unit testing, and JavaScript. Boost your skills by digging into our comprehensive video library.
+## Встановлення та запуск
 
-## Laravel Sponsors
+### 1. Клонування репозиторію
 
-We would like to extend our thanks to the following sponsors for funding Laravel development. If you are interested in becoming a sponsor, please visit the [Laravel Partners program](https://partners.laravel.com).
+```bash
+git clone https://github.com/gerasimovamargo/grant-ai-system.git
+cd grant-ai-system
+```
 
-### Premium Partners
+### 2. Встановлення залежностей
 
-- **[Vehikl](https://vehikl.com)**
-- **[Tighten Co.](https://tighten.co)**
-- **[Kirschbaum Development Group](https://kirschbaumdevelopment.com)**
-- **[64 Robots](https://64robots.com)**
-- **[Curotec](https://www.curotec.com/services/technologies/laravel)**
-- **[DevSquad](https://devsquad.com/hire-laravel-developers)**
-- **[Redberry](https://redberry.international/laravel-development)**
-- **[Active Logic](https://activelogic.com)**
+```bash
+composer install
+```
 
-## Contributing
+### 3. Налаштування середовища
 
-Thank you for considering contributing to the Laravel framework! The contribution guide can be found in the [Laravel documentation](https://laravel.com/docs/contributions).
+Скопіюйте файл прикладу та відкрийте для редагування:
 
-## Code of Conduct
+```bash
+cp .env.example .env
+```
 
-In order to ensure that the Laravel community is welcoming to all, please review and abide by the [Code of Conduct](https://laravel.com/docs/contributions#code-of-conduct).
+Заповніть такі параметри у файлі `.env`:
 
-## Security Vulnerabilities
+```env
+APP_NAME=GrantAI
+APP_URL=http://localhost:8000
 
-If you discover a security vulnerability within Laravel, please send an e-mail to Taylor Otwell via [taylor@laravel.com](mailto:taylor@laravel.com). All security vulnerabilities will be promptly addressed.
+DB_CONNECTION=mysql
+DB_HOST=127.0.0.1
+DB_PORT=3306
+DB_DATABASE=grant_system
+DB_USERNAME=root
+DB_PASSWORD=
 
-## License
+GEMINI_API_KEY=ваш_ключ_від_gemini_api
 
-The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
+MAIL_MAILER=smtp
+MAIL_HOST=smtp.gmail.com
+MAIL_PORT=587
+MAIL_USERNAME=ваш_gmail@gmail.com
+MAIL_PASSWORD=ваш_app_password
+MAIL_FROM_ADDRESS=ваш_gmail@gmail.com
+MAIL_FROM_NAME="GrantAI"
+```
+
+### 4. Генерація ключа застосунку
+
+```bash
+php artisan key:generate
+```
+
+### 5. Створення бази даних
+
+Створіть базу даних `grant_system` у MySQL, потім виконайте міграції:
+
+```bash
+php artisan migrate
+```
+
+### 6. Запуск сервера
+
+```bash
+php artisan serve
+```
+
+Застосунок буде доступний за адресою: **http://localhost:8000**
+
+### 7. Запуск планувальника
+
+Відкрийте другий термінал і виконайте:
+
+```bash
+php artisan schedule:work
+```
+
+## Налаштування Gemini API
+
+1. Зайдіть на [ai.google.dev](https://ai.google.dev)
+2. Створіть проєкт та отримайте безкоштовний API ключ
+3. Вставте ключ у `.env` як `GEMINI_API_KEY`
+
+Безкоштовний план дозволяє до 20 запитів на день для моделі gemini-2.5-flash.
+
+## Налаштування Gmail
+
+1. Зайдіть на [myaccount.google.com](https://myaccount.google.com)
+2. Безпека → увімкніть двофакторну автентифікацію
+3. Паролі додатків → створіть новий пароль для "GrantAI"
+4. Скопіюйте згенерований пароль (16 символів без пробілів) у `MAIL_PASSWORD`
+
+## Використання
+
+1. Зареєструйтесь або увійдіть в систему
+2. Заповніть профіль: **Мій профіль** → вкажіть тип організації, сферу діяльності, бюджет та інші параметри
+3. На головній сторінці введіть запит у вільній формі, наприклад: *"Шукаю грант на навчання в Європі в сфері IT"*
+4. Натисніть **Знайти гранти** — система підбере 10 грантів і виділить TOP-3
+5. TOP-3 гранти автоматично надійдуть на пошту
+
+## Ручний запуск моніторингу
+
+```bash
+php artisan grants:monitor
+```
+
+
